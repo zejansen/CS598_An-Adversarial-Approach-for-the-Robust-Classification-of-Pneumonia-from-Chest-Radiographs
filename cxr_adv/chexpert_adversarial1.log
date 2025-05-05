@@ -1,0 +1,10 @@
+Epoch 000: train clf loss -00.6801,train adv loss 000.8023,val clf loss 018.1721,val_auroc_adv 000.6765,val_auroc_clf 000.4186
+Epoch 001: train clf loss -00.6848,train adv loss 000.7620,val clf loss 018.1123,val_auroc_adv 000.6750,val_auroc_clf 000.4419
+Epoch 002: train clf loss -00.8328,train adv loss 000.8891,val clf loss 018.2403,val_auroc_adv 000.6713,val_auroc_clf 000.4047
+Epoch 003: train clf loss -00.9246,train adv loss 001.0195,val clf loss 018.1146,val_auroc_adv 000.6658,val_auroc_clf 000.3953
+Epoch 004: train clf loss -00.2887,train adv loss 000.4050,val clf loss 017.9775,val_auroc_adv 000.6686,val_auroc_clf 000.4279
+Epoch 005: train clf loss -00.1516,train adv loss 000.2700,val clf loss 017.9699,val_auroc_adv 000.6677,val_auroc_clf 000.4465
+Epoch 006: train clf loss -00.4975,train adv loss 000.6634,val clf loss 017.9361,val_auroc_adv 000.6737,val_auroc_clf 000.4512
+Epoch 007: train clf loss -00.5317,train adv loss 000.6463,val clf loss 017.9077,val_auroc_adv 000.6761,val_auroc_clf 000.4744
+Epoch 008: train clf loss -00.5508,train adv loss 000.6468,val clf loss 017.8128,val_auroc_adv 000.6716,val_auroc_clf 000.4837
+Epoch 009: train clf loss -00.1502,train adv loss 000.2640,val clf loss 017.7223,val_auroc_adv 000.6647,val_auroc_clf 000.4744

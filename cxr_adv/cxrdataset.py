@@ -30,6 +30,7 @@ def grouped_split(dataframe, random_state=None, test_size=0.05):
     by _get_patient_id to return the unique patient identifiers.
     '''
     groups = _get_unique_patient_ids(dataframe) 
+    groups = groups[0:1000]
     traingroups, testgroups = sklearn.model_selection.train_test_split(
             groups,
             random_state=random_state,
@@ -130,6 +131,7 @@ class CheXpertDataset(CXRDataset):
                 views in the dataset. If False, include only frontal views.
         '''
         self.exclude_view = exclude_view
+        print("EXCLUDE VIEW :",self.exclude_view)
         self.transform = self._transforms[fold]
         self.path_to_images = "/content/drive/MyDrive/cxr_adv/data/"
         self.fold = fold

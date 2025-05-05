@@ -22,10 +22,12 @@ def _find_index(ds, desired_label):
         raise ValueError("Label {:s} not found.".format(desired_label))
 
 def _train_standard(datasetclass, checkpoint_path, logpath, ignoreAP_PA=False):
+    print(checkpoint_path)
+    print(logpath)
     trainds = datasetclass(fold='train',exclude_view = ignoreAP_PA)
     valds = datasetclass(fold='val',exclude_view = ignoreAP_PA)
     testds = datasetclass(fold='test',exclude_view = ignoreAP_PA)
-
+  
     classifier = CXRClassifier()
     classifier.train(trainds,
                 valds,
@@ -51,13 +53,14 @@ def _train_adversarial(datasetclass, checkpoint_path, logpath, ignoreAP_PA=False
     trainds = datasetclass(fold='train')
     valds = datasetclass(fold='val')
     testds = datasetclass(fold='test')
+    print(checkpoint_path)
     
     
     classifier = CXRAdvClassifier()
     classifier.train(trainds,
                 valds,
                 lr=0.01, 
-                max_epochs=5, # TO DO - maybe reduce this. 
+                max_epochs=30, # TO DO - maybe reduce this. 
                 weight_decay=1e-4,
                 logpath=logpath,
                 checkpoint_path=checkpoint_path,
@@ -81,17 +84,25 @@ def main():
     parser.add_argument('ignoreAP_PA', action="store",default = False)
     
     args = parser.parse_args()
+    ignoreview = False
+
+    print("in main of training")
     
     if args.dataset == 'MIMIC' and args.training =='Standard':
         _train_standard(MIMICDataset, 'mimic_standard_model.pkl', 'mimic_standard.log', args.ignoreAP_PA)
     elif args.dataset == 'CheXpert' and args.training =='Standard':
-      if args.ignoreAP_PA==True:
-         modelP = 'chexpert_standard_model.pkl'
-         logP = 'chexpert_standard.log'
+      print("Standard CheXpert")
+      if args.ignoreAP_PA == 'False':
+        "Considering VIEW"
+        ignoreview = False
+        modelP = 'chexpert_standard_model.pkl'
+        logP = 'chexpert_standard.log'
       else:
+        "IGNORING VIEW"
+        ignoreview=True
         modelP = 'chexpert_standard_model_ignore_view.pkl'
         logP='chexpert_standard_ignore_view.log'
-        _train_standard(CheXpertDataset, modelP, logP,args.ignoreAP_PA)
+      _train_standard(CheXpertDataset, modelP, logP,ignoreview)
     elif args.dataset == 'CheXpert' and args.training =='Adversarial':
         _train_adversarial(CheXpertDataset, 'chexpert_adversarial_model.pkl', 'chexpert_adversarial.log')
     elif args.dataset == 'MIMIC' and args.training =='Adversarial':

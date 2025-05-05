@@ -391,6 +391,7 @@ class CXRAdvClassifier(object):
             p_y_pneumo = p_y[:,pneumo_index].view(-1,1)
             self.adv.zero_grad()
             p_z = self.adv(p_y_pneumo)
+            appa = appa.view(-1,1)
             loss = (criterion(p_z, appa) * lam).mean()
             loss.backward()
             optimizer.step()
@@ -452,7 +453,7 @@ class CXRAdvClassifier(object):
             image = torch.autograd.Variable(image).cuda()
             label = torch.autograd.Variable(label).cuda()
             appa = torch.autograd.Variable(appa).cuda().float()
-            
+            appa = appa.view(-1,1)
             p_y = self.clf(image)
             p_y_pneumo = p_y[:,pneumo_index].view(-1,1)
             self.adv.zero_grad()
@@ -473,6 +474,7 @@ class CXRAdvClassifier(object):
         p_z = self.adv(p_y_pneumo)
         self.clf.zero_grad()
         p_z = self.adv(p_y_pneumo)
+        appa = appa.view(-1,1)
         loss_adv = (adv_criterion(p_z, appa) * lam).mean()
         clf_loss = clf_criterion(p_y, label) - (adv_criterion(self.adv(p_y_pneumo), appa) * lam).mean()
         clf_loss.backward()
@@ -625,7 +627,7 @@ class CXRAdvClassifier(object):
                     logfile.write(logstr + '\n')      
             print(logstr)
             
-            if (val_auroc_adv <= 0.52 and val_auroc_adv >= 0.48) and (best_val_auroc_clf == None or val_auroc_clf > best_val_auroc_clf):
+            if (val_auroc_adv <= 0.60 and val_auroc_adv >= 0.40) and (best_val_auroc_clf == None or val_auroc_clf > best_val_auroc_clf):
                 best_epoch = i_epoch
                 best_val_auroc_clf = val_auroc_clf
                 self._checkpoint(i_epoch, val_auroc_clf)
@@ -637,6 +639,7 @@ class CXRAdvClassifier(object):
         Save a checkpoint to self.checkpoint_path, including the full model, 
         current epoch, learning rate, and random number generator state.
         '''
+        print("saving checkpoint ",self.checkpoint_path)
         state = {'clf': self.clf,
                  'adv': self.adv,
                  'best_val_auroc_clf': valloss,
